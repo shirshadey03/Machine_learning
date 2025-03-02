@@ -1,0 +1,30 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+path='/workspaces/Machine_learning/data_LogisticReg (1).csv'
+df=pd.read_csv(path)
+from sklearn.linear_model import LogisticRegression
+import numpy as np
+score_list=df['Score'].tolist()
+accepted_list=df['Accepted'].tolist()
+score_array=np.array(score_list)
+accepted_array=np.array(accepted_list)
+X=np.reshape(score_list,(len(score_list),1))
+Y=np.reshape(accepted_list,(len(accepted_list),1))
+lr=LogisticRegression()
+lr.fit(X,Y)
+plt.figure()
+plt.scatter(X.ravel(),Y,color='black')
+def model(x):
+  return 1/(1+np.exp(-x))
+X_test=np.linspace(0,100,200)
+chances=model(X_test*lr.coef_+lr.intercept_).ravel()
+plt.plot(X_test,chances,color='red',linewidth=1)# ata te dekha jbe j onek ta e stiff hoache curve ta
+plt.axhline(y=0,color='k',linestyle='-')
+plt.axhline(y=1,color='k',linestyle='-')
+plt.axhline(y=0.5,color='b',linestyle='--')
+plt.axvline(x=82.93,color='g',linestyle='--')
+plt.xlabel('Accepted')
+plt.ylabel('Score')
+plt.xlim(75,85)
+plt.show()
